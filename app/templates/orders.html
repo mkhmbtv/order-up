@@ -2,4 +2,14 @@
 
 {% block content %}
     <h1>Order Up!</h1>
+    <form action="{{ url_for('.assign_table') }}" method="POST">
+        {{ assign_form.csrf_token() }}
+        ASSIGN TABLE
+        <div>
+            {{ assign_form.tables.label }} {{ assign_form.tables }}
+            {{ assign_form.servers.label }} {{ assign_form.servers }}
+            {{ assign_form.assign }}
+        </div>
+    </form>
+
 {% endblock %}

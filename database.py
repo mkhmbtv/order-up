@@ -1,11 +1,15 @@
 from dotenv import load_dotenv
 from random import randint
-
-from flask import session
 load_dotenv()
 
 from app import app, db
-from app.models import Employee, Menu, MenuItem, MenuItemType, Table
+from app.models import (
+    Employee,
+    Menu, MenuItem,
+    MenuItemType,
+    Order, OrderDetail,
+    Table
+)
 
 
 with app.app_context():
@@ -31,6 +35,11 @@ with app.app_context():
     for i in range(1, 11):
         db.session.add(Table(number=i, capacity=randint(2, 8)))
 
+    table = Table(number=11, capacity=4)
+    order = Order(employee=employee, table=table, finished=False)
+    order_detail = OrderDetail(order=order, menu_item=fries)
+
     db.session.add(dinner)
     db.session.add(employee)
+    db.session.add(order)
     db.session.commit()
