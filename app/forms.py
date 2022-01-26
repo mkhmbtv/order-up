@@ -1,5 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, StringField, SubmitField, PasswordField
+from wtforms import (
+    SelectField,
+    SelectMultipleField,
+    StringField, SubmitField,
+    PasswordField
+)
 from wtforms.validators import DataRequired
 
 
@@ -13,3 +18,7 @@ class TableAssignementForm(FlaskForm):
     tables = SelectField('Tables', coerce=int)
     servers = SelectField('Servers', coerce=int)
     assign = SubmitField('Assign')
+
+
+class MenuItemAssignementForm(FlaskForm):
+    menu_item_ids = SelectMultipleField('Menu Items', coerce=int)

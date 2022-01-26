@@ -3,13 +3,56 @@
 {% block content %}
     <h1>Order Up!</h1>
     <form action="{{ url_for('.assign_table') }}" method="POST">
-        {{ assign_form.csrf_token() }}
+        {{ form.csrf_token() }}
         ASSIGN TABLE
         <div>
-            {{ assign_form.tables.label }} {{ assign_form.tables }}
-            {{ assign_form.servers.label }} {{ assign_form.servers }}
-            {{ assign_form.assign }}
+            {{ form.tables.label }} {{ form.tables }}
+            {{ form.servers.label }} {{ form.servers }}
+            {{ form.assign }}
         </div>
     </form>
-
+    <table>
+        <thead>
+            <tr>
+                <th>YOUR OPEN ORDERS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>Table {{ order.table.number }}</td>
+                    <td>
+                        {% set sum = namespace(value=0) %}
+                        {% for detail in order.details %}
+                            {% set sum.value = sum.value + detail.menu_item.price %}
+                        {% endfor %}
+                        {% if sum.value > 0 %}
+                            ${{ sum.value }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="{{ url_for('.close_table', id=order.id) }}" method="POST">
+                            {{ form.csrf_token }}
+                            <button type="submit">Close table</button>
+                        </form>
+                    </td>
+                    <td>
+                        <button form="food-list" formaction="{{ url_for('.add_to_order', id=order.id) }}">
+                            Add to order
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form id='food-list' method="POST">
+        {{ form.csrf_token }}
+        {% for food_type in foods_by_type %}
+            <p>{{ food_type }}</p>
+            {% for food_item in foods_by_type[food_type] %}
+                <input type="checkbox" name="menu_item_ids" id="item_{{ food_item.id }}" value="{{ food_item.id }}">
+                <label for="item_{{ food_item.id }}">{{ food_item.name }}</label>
+            {% endfor %}
+        {% endfor %}
+    </form>
 {% endblock %}
