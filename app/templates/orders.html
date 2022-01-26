@@ -22,13 +22,7 @@
                 <tr>
                     <td>Table {{ order.table.number }}</td>
                     <td>
-                        {% set sum = namespace(value=0) %}
-                        {% for detail in order.details %}
-                            {% set sum.value = sum.value + detail.menu_item.price %}
-                        {% endfor %}
-                        {% if sum.value > 0 %}
-                            ${{ sum.value }}
-                        {% endif %}
+                        ${{ order.total }}
                     </td>
                     <td>
                         <form action="{{ url_for('.close_table', id=order.id) }}" method="POST">

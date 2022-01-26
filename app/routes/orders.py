@@ -45,7 +45,7 @@ def add_to_order(id):
         for menu_item_id in form.menu_item_ids.data:
             db.session.add(OrderDetail(order=order, menu_item_id=menu_item_id))
         db.session.commit()
-        return redirect(url_for('.index'))
+    return redirect(url_for('.index'))
 
 
 @bp.route('/orders/assign', methods=['POST'])
@@ -61,7 +61,7 @@ def assign_table():
         order = Order(table_id=table_id, employee_id=employee_id, finished=False)
         db.session.add(order)
         db.session.commit()
-        return redirect(url_for('.index'))
+    return redirect(url_for('.index'))
 
 
 @bp.route('/orders/<int:id>/close', methods=['POST'])

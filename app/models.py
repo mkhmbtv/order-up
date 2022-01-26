@@ -78,6 +78,10 @@ class Order(db.Model):
     table = db.relationship('Table', back_populates='orders')
     details = db.relationship('OrderDetail', back_populates='order')
 
+    @property
+    def total(self):
+        return sum([detail.menu_item.price for detail in self.details])
+
 
 class OrderDetail(db.Model):
     __tablename__ = 'order_details'
